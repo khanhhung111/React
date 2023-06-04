@@ -4,50 +4,25 @@ import {
     Card, CardImg, CardImgOverlay, CardText, CardBody,
     CardTitle
 } from 'reactstrap';
-import DishDetail from './DishdetailComponent';
 
-class Menu extends Component {
+function RenderMenuItem ({dish, onClick}) {
+    return (
+        <Card
+            onClick={() => onClick(dish.id)}>
+            <CardImg width="100%" src={dish.image} alt={dish.name} />
+            <CardImgOverlay>
+                <CardTitle>{dish.name}</CardTitle>
+            </CardImgOverlay>
+        </Card>
+    );
+}
 
-    constructor(props) {
-        super(props);
+    const Menu = (props) => {
 
-        this.state = {
-            selectedDish: null
-        }
-    }
-
-    onDishSelect(dish) {
-        this.setState({ selectedDish: dish });
-    }
-
-    renderDish(dish) {
-        if (dish != null)
+        const menu = props.dishes.map((dish) => {
             return (
-                <Card>
-                    <CardImg top src={dish.image} alt={dish.name} />
-                    <CardBody>
-                        <CardTitle>{dish.name}</CardTitle>
-                        <CardText>{dish.description}</CardText>
-                    </CardBody>
-                </Card>
-            );
-        else
-            return (
-                <div></div>
-            );
-    }
-
-    render() {
-        const menu = this.props.dishes.map((dish) => {
-            return (
-                <div className="col-12 col-md-3">
-                    <Card key={dish.id}
-                        onClick={() => this.props.onClick(dish.id)}>
-                        <CardImg width="100%" src={dish.image} alt={dish.name} />
-                        <CardImgOverlay>
-                            <CardTitle>{dish.name}</CardTitle>
-                        </CardImgOverlay>
-                    </Card>
+                <div className="col-12 col-md-3"  key={dish.id}>
+                    <RenderMenuItem dish={dish} onClick={props.onClick} />
                 </div>
             );
         });
@@ -57,10 +32,9 @@ class Menu extends Component {
                 <div className="row">
                     {menu}
                 </div>
-                <DishDetail selecteddish={this.state.selectedDish} />
             </div>
         );
     }
-}
+
 
 export default Menu;
